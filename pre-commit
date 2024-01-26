@@ -1,0 +1,8 @@
+#!/bin/sh
+
+printf "\n# \e[93mRunning Ktlint before git commit is committed...\e[0m\n\n"
+
+set -e
+./gradlew --parallel --quiet ktlintCheck
+
+printf "\n# \e[92mKtlint git-hook succeeded ✅\e[0m\n"
