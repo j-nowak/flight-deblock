@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/flights")
 @Validated
 class FlightSearchController {
-    @PostMapping
+    @PostMapping("/search")
     fun search(
         @Valid @RequestBody flightSearchRequest: FlightSearchRequest,
     ): FlightSearchResponse {

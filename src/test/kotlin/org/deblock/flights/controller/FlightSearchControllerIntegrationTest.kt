@@ -28,7 +28,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -54,7 +54,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -80,7 +80,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -102,7 +102,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -125,7 +125,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -145,7 +145,7 @@ class FlightSearchControllerIntegrationTest(
             }
             """.trimIndent()
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -167,7 +167,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -190,7 +190,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -213,7 +213,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -236,7 +236,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -260,7 +260,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -283,7 +283,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -306,7 +306,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -329,7 +329,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
@@ -352,7 +352,7 @@ class FlightSearchControllerIntegrationTest(
             """.trimIndent()
 
         mockMvc.perform(
-            post("/api/flights")
+            post("/api/flights/search")
                 .content(requestJson)
                 .contentType("application/json"),
         )
