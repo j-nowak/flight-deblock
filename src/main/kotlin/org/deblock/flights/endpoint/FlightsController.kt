@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/flights")
 @Validated
-class FlightController {
+class FlightSearchController {
 
     @PostMapping
-    fun getFlights(
+    fun searchFlights(
         @Valid @RequestBody flightSearchRequest: FlightSearchRequest
     ): FlightSearchResponse {
             return FlightSearchResponse(emptyList())

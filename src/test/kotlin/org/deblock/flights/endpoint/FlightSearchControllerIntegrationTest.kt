@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FlightControllerIntegrationTest {
+class FlightSearchControllerIntegrationTest {
 
     @Autowired
     lateinit var mockMvc: MockMvc
