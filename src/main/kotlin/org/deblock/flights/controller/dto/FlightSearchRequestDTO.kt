@@ -2,6 +2,7 @@ package org.deblock.flights.controller.dto
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import org.deblock.flights.service.FlightSearchRequest
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import java.util.regex.Pattern
@@ -46,4 +47,14 @@ data class FlightSearchRequestDTO(
             "Departure date must be on or before return date"
         }
     }
+}
+
+fun FlightSearchRequestDTO.toSearchRequest(): FlightSearchRequest {
+    return FlightSearchRequest(
+        origin = this.origin,
+        destination = this.destination,
+        departureDate = this.departureDate,
+        returnDate = this.returnDate,
+        numberOfPassengers = this.numberOfPassengers
+    )
 }

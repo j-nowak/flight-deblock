@@ -1,8 +1,10 @@
 package org.deblock.flights.controller
 
 import jakarta.validation.Valid
+import org.deblock.flights.controller.mapper.FlightSearchMapper
 import org.deblock.flights.controller.dto.FlightSearchRequestDTO
 import org.deblock.flights.controller.dto.FlightSearchResponseDTO
+import org.deblock.flights.controller.dto.toSearchRequest
 import org.deblock.flights.service.FlightSearchService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,9 +20,9 @@ class FlightSearchController(
 ) {
     @PostMapping("/search")
     fun search(
-        @Valid @RequestBody flightSearchRequest: FlightSearchRequestDTO,
+        @Valid @RequestBody flightSearchRequestDTO: FlightSearchRequestDTO,
     ): FlightSearchResponseDTO {
-
-        return FlightSearchResponseDTO(emptyList())
+        val searchResult = flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
+        return FlightSearchMapper.map(searchResult)
     }
 }
