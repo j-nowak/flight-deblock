@@ -1,6 +1,6 @@
-package org.deblock.flights.endpoint
+package org.deblock.flights.controller
 
-import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -109,6 +109,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", containsString("Departure date must be on or before return date")))
     }
 
     @Test
@@ -144,14 +146,15 @@ class FlightSearchControllerIntegrationTest {
                 "numberOfPassengers": 5
             }
             """.trimIndent()
-
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
                 .contentType("application/json"),
         )
+
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error_message").value("Number of passengers cannot exceed 4"))
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Number of passengers cannot exceed 4")))
     }
 
     @Test
@@ -172,26 +175,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
-    }
-
-    @Test
-    fun `returns 400 Bad Request when destination is missing`() {
-        val requestJson =
-            """
-            {
-                "origin": "AMS",
-                "departureDate": "2024-02-01",
-                "returnDate": "2024-02-10",
-                "numberOfPassengers": 2
-            }
-            """.trimIndent()
-
-        mockMvc.perform(
-            post("/api/flights")
-                .content(requestJson)
-                .contentType("application/json"),
-        )
-            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Missing request body parameter: origin")))
     }
 
     @Test
@@ -213,6 +198,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid IATA code for origin")))
     }
 
     @Test
@@ -234,6 +221,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid IATA code for destination")))
     }
 
     @Test
@@ -255,6 +244,9 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Origin and destination must be different")))
     }
 
     @Test
@@ -276,6 +268,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Number of passengers should be at least 1")))
     }
 
     @Test
@@ -297,6 +291,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid format for parameter: departureDate")))
     }
 
     @Test
@@ -318,6 +314,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid format for parameter: departureDate")))
     }
 
     @Test
@@ -339,6 +337,8 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid format for parameter: returnDate")))
     }
 
     @Test
@@ -360,5 +360,7 @@ class FlightSearchControllerIntegrationTest {
                 .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error").value("Invalid request body"))
+            .andExpect(jsonPath("$.details[0]", `is`("Invalid format for parameter: returnDate")))
     }
 }

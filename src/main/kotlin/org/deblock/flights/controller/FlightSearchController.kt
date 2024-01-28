@@ -1,4 +1,4 @@
-package org.deblock.flights.endpoint
+package org.deblock.flights.controller
 
 import jakarta.validation.Valid
 import org.deblock.flights.dto.FlightSearchRequest
