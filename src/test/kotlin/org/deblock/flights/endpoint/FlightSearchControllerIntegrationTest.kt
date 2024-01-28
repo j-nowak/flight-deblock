@@ -13,13 +13,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 class FlightSearchControllerIntegrationTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
     @Test
     fun `returns flight data from a single supplier if other are empty`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -27,12 +27,12 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.flights").isArray)
@@ -44,7 +44,8 @@ class FlightSearchControllerIntegrationTest {
 
     @Test
     fun `returns flight data from suppliers sorted by fare`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -52,12 +53,12 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.flights").isArray)
@@ -69,7 +70,8 @@ class FlightSearchControllerIntegrationTest {
 
     @Test
     fun `returns empty result when suppliers don't have any matching flight`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -77,12 +79,12 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.flights").isEmpty)
@@ -90,7 +92,8 @@ class FlightSearchControllerIntegrationTest {
 
     @Test
     fun `returns 400 Bad Request when departure date is later than return date`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -98,19 +101,41 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-01-30",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
+    fun `accepts same day flight requests`() {
+        val requestJson =
+            """
+            {
+                "origin": "LHR",
+                "destination": "AMS",
+                "departureDate": "2024-02-01",
+                "returnDate": "2024-02-01",
+                "numberOfPassengers": 2
+            }
+            """.trimIndent()
+
+        mockMvc.perform(
+            post("/api/flights")
+                .content(requestJson)
+                .contentType("application/json"),
+        )
+            .andExpect(status().isOk)
+    }
+
+    @Test
     fun `returns 400 Bad Request when number of passengers is too big`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -118,57 +143,61 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 5
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
+            .andExpect(jsonPath("$.error_message").value("Number of passengers cannot exceed 4"))
     }
 
     @Test
     fun `returns 400 Bad Request when origin is missing`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "destination": "AMS",
                 "departureDate": "2024-02-01",
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when destination is missing`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "AMS",
                 "departureDate": "2024-02-01",
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when origin is an invalid code`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "INVALID",
                 "destination": "AMS",
@@ -176,19 +205,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when destination is an invalid code`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "INVALID",
@@ -196,19 +226,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when origin and destination are the same place`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "LHR",
@@ -216,19 +247,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when numberOfPassengers is 0`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -236,19 +268,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 0
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when departureDate is invalid`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -256,19 +289,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when departureDate is in wrong format`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -276,19 +310,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024-02-10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when returnDate is invalid`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -296,19 +331,20 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "INVALID_DATE",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `returns 400 Bad Request when returnDate is in wrong format`() {
-        val requestJson = """
+        val requestJson =
+            """
             {
                 "origin": "LHR",
                 "destination": "AMS",
@@ -316,12 +352,12 @@ class FlightSearchControllerIntegrationTest {
                 "returnDate": "2024.02.10",
                 "numberOfPassengers": 2
             }
-        """.trimIndent()
+            """.trimIndent()
 
         mockMvc.perform(
             post("/api/flights")
                 .content(requestJson)
-                .contentType("application/json")
+                .contentType("application/json"),
         )
             .andExpect(status().isBadRequest)
     }

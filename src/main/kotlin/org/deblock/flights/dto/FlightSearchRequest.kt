@@ -2,29 +2,48 @@ package org.deblock.flights.dto
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Size
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
+import java.util.regex.Pattern
 
 data class FlightSearchRequest(
-    @NotBlank(message = "Origin is required")
-    @Size(min = 3, max = 3, message = "Origin should be a 3-letter IATA code")
     val origin: String,
-
-    @NotBlank(message = "Destination is required")
-    @Size(min = 3, max = 3, message = "Destination should be a 3-letter IATA code")
     val destination: String,
-
-    @NotBlank(message = "Departure date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     val departureDate: LocalDate,
-
-    @NotBlank(message = "Return date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     val returnDate: LocalDate,
+    @field:Min(value = 1, message = "Number of passengers should be at least 1")
+    @field:Max(value = 4, message = "Number of passengers cannot exceed 4")
+    val numberOfPassengers: Int,
+) {
+    init {
+        validateOriginAndDestination()
+        validateFlightDates()
+    }
 
-    @Min(value = 1, message = "Number of passengers should be at least 1")
-    @Max(value = 4, message = "Number of passengers cannot exceed 4")
-    val numberOfPassengers: Int
-)
+    private fun validateOriginAndDestination() {
+        validateIATACodes()
+        validateDifferentOriginAndDestination()
+    }
+
+    private fun validateIATACodes() {
+        require(isValidIATACode(origin)) { "Invalid IATA code for origin" }
+        require(isValidIATACode(destination)) { "Invalid IATA code for destination" }
+    }
+
+    private fun isValidIATACode(iataCode: String): Boolean {
+        val iataCodePattern: Pattern = Pattern.compile("^[A-Z]{3}$")
+        return iataCodePattern.matcher(iataCode).matches()
+    }
+
+    private fun validateDifferentOriginAndDestination() {
+        require(origin != destination) { "Origin and destination must be different" }
+    }
+
+    private fun validateFlightDates() {
+        require(departureDate.isEqual(returnDate) || departureDate.isBefore(returnDate)) {
+            "Departure date must be on or before return date"
+        }
+    }
+}
