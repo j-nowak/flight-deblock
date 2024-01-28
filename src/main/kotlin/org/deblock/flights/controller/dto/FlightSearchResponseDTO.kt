@@ -1,10 +1,10 @@
-package org.deblock.flights.dto
+package org.deblock.flights.controller.dto
 
 import java.time.Instant
 
-data class FlightSearchResponse(val flights: List<Flight>)
+data class FlightSearchResponseDTO(val flights: List<FlightDTO>)
 
-data class Flight(
+data class FlightDTO(
     val airline: String,
     val supplier: String,
     val fare: Double,

@@ -1,4 +1,4 @@
-package org.deblock.flights.dto
+package org.deblock.flights.controller.dto
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import java.util.regex.Pattern
 
-data class FlightSearchRequest(
+data class FlightSearchRequestDTO(
     val origin: String,
     val destination: String,
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
