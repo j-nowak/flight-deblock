@@ -12,6 +12,7 @@ plugins {
 val springBootVersion: String by project
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	implementation("org.springframework.boot:spring-boot-starter-validation:${springBootVersion}")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
