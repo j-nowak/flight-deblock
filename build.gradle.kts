@@ -33,4 +33,5 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	systemProperty("spring.test.constructor.autowire.mode", "all")
 }
