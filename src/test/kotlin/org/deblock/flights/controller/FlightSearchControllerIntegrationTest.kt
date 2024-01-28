@@ -151,7 +151,6 @@ class FlightSearchControllerIntegrationTest {
                 .content(requestJson)
                 .contentType("application/json"),
         )
-
             .andExpect(status().isBadRequest)
             .andExpect(jsonPath("$.error").value("Invalid request body"))
             .andExpect(jsonPath("$.details[0]", `is`("Number of passengers cannot exceed 4")))

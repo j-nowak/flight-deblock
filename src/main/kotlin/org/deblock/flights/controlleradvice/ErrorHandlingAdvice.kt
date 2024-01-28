@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ErrorHandlingAdvice {
-
     @ExceptionHandler(ConstraintViolationException::class, MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleValidationException(ex: Exception): ResponseEntity<ErrorResponse> {
-        val details = when (ex) {
-            is ConstraintViolationException -> ex.constraintViolations.map { it.message }
-            is MethodArgumentNotValidException -> ex.bindingResult.fieldErrors.map { it.defaultMessage }
-            else -> emptyList()
-        }
+        val details =
+            when (ex) {
+                is ConstraintViolationException -> ex.constraintViolations.map { it.message }
+                is MethodArgumentNotValidException -> ex.bindingResult.fieldErrors.map { it.defaultMessage }
+                else -> emptyList()
+            }
         return ResponseEntity.badRequest().body(ErrorResponse.invalidRequestBody(details))
     }
 
@@ -43,34 +43,35 @@ class ErrorHandlingAdvice {
     }
 
     private fun handleValueInstantiationException(ex: ValueInstantiationException): ResponseEntity<ErrorResponse> {
-        val details = if (ex.cause is IllegalArgumentException && ex.cause?.message != null) {
-            listOf((ex.cause as IllegalArgumentException).message!!)
-        } else {
-            emptyList()
-        }
+        val details =
+            if (ex.cause is IllegalArgumentException && ex.cause?.message != null) {
+                listOf((ex.cause as IllegalArgumentException).message!!)
+            } else {
+                emptyList()
+            }
         return ResponseEntity.badRequest().body(
-            ErrorResponse.invalidRequestBody(details)
+            ErrorResponse.invalidRequestBody(details),
         )
     }
 
     private fun handleMissingParameter(ex: MissingKotlinParameterException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.badRequest().body(
             ErrorResponse.invalidRequestBody(
-                "Missing request body parameter: ${ex.path.first().fieldName}"
-            )
+                "Missing request body parameter: ${ex.path.first().fieldName}",
+            ),
         )
     }
 
     private fun handleInvalidFormatException(ex: InvalidFormatException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.badRequest().body(
-            ErrorResponse.invalidRequestBody("Invalid format for parameter: ${ex.path.first().fieldName}")
+            ErrorResponse.invalidRequestBody("Invalid format for parameter: ${ex.path.first().fieldName}"),
         )
     }
 }
 
 data class ErrorResponse(
     val error: String,
-    val details: List<String> = emptyList()
+    val details: List<String> = emptyList(),
 ) {
     companion object {
         fun invalidRequestBody(errorDetails: List<String> = emptyList()): ErrorResponse {

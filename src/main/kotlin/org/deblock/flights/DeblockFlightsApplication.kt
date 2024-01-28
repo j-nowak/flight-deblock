@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Import
 @SpringBootApplication
 @Import(
     *[
-        DeblockFlightsConfiguration::class
-    ]
+        DeblockFlightsConfiguration::class,
+    ],
 )
 class DeblockFlightsApplication
 
