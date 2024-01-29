@@ -9,6 +9,7 @@ import org.deblock.flights.service.supplier.toughjet.ToughJetSearchRequest
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -83,7 +84,15 @@ class ToughJetClientTest(
 
         // Then
         assertThat(result).hasSize(1)
-        assertThat(result[0].carrier).isEqualTo("ToughJet")
+        val toughJetFlight = result[0]
+        assertThat(toughJetFlight.carrier).isEqualTo("ToughJet")
+        assertThat(toughJetFlight.basePrice).isEqualTo(300.0)
+        assertThat(toughJetFlight.tax).isEqualTo(50.0)
+        assertThat(toughJetFlight.discount).isEqualTo(10.0)
+        assertThat(toughJetFlight.departureAirportName).isEqualTo("LHR")
+        assertThat(toughJetFlight.arrivalAirportName).isEqualTo("AMS")
+        assertThat(toughJetFlight.outboundDateTime).isEqualTo(Instant.parse("2022-01-01T10:00:00Z"))
+        assertThat(toughJetFlight.inboundDateTime).isEqualTo(Instant.parse("2022-01-10T15:30:00Z"))
     }
 
     @Test
