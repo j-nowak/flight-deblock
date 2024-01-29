@@ -1,0 +1,114 @@
+package org.deblock.flights.service.supplier
+
+import org.deblock.flights.service.FlightSearchRequest
+import org.deblock.flights.service.client.crazyair.CrazyAirClient
+import org.deblock.flights.service.client.crazyair.CrazyAirFlight
+import org.deblock.flights.service.client.crazyair.CrazyAirSearchRequest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+
+internal class CrazyAirSupplierTest {
+
+    private val crazyAirClient: CrazyAirClient = mock()
+
+    private val crazyAirSupplier = CrazyAirSupplier(crazyAirClient)
+
+    @Test
+    fun `searchFlights should return a list of Flight`() {
+        // Given
+        val flightSearchRequest = FlightSearchRequest(
+            origin = "LHR",
+            destination = "AMS",
+            departureDate = LocalDate.parse("2022-01-01"),
+            returnDate = LocalDate.parse("2022-01-10"),
+            numberOfPassengers = 2
+        )
+
+        val crazyAirSearchRequest = CrazyAirSearchRequest(
+            origin = "LHR",
+            destination = "AMS",
+            departureDate = flightSearchRequest.departureDate,
+            returnDate = flightSearchRequest.returnDate,
+            passengerCount = flightSearchRequest.numberOfPassengers
+        )
+
+        val crazyAirFlights = listOf(
+            CrazyAirFlight(
+                airline = "British Airways",
+                price = 350.0,
+                cabinclass = "E",
+                departureAirportCode = "LHR",
+                destinationAirportCode = "AMS",
+                departureDate = LocalDateTime.parse("2022-01-01T10:00:00"),
+                arrivalDate = LocalDateTime.parse("2022-01-01T12:00:00")
+            ),
+            CrazyAirFlight(
+                airline = "Lufthansa",
+                price = 400.0,
+                cabinclass = "B",
+                departureAirportCode = "LHR",
+                destinationAirportCode = "AMS",
+                departureDate = LocalDateTime.parse("2022-01-01T14:00:00"),
+                arrivalDate = LocalDateTime.parse("2022-01-01T16:00:00")
+            )
+        )
+
+        whenever(crazyAirClient.searchFlights(crazyAirSearchRequest)).thenReturn(crazyAirFlights)
+
+        // When
+        val result = crazyAirSupplier.searchFlights(flightSearchRequest)
+
+        // Then
+        assertEquals(2, result.size)
+
+        // Assertions for the first flight
+        assertEquals("British Airways", result[0].airline)
+        assertEquals(350.0, result[0].fare)
+        assertEquals("LHR", result[0].departureAirportCode)
+        assertEquals("AMS", result[0].destinationAirportCode)
+        assertEquals(Instant.parse("2022-01-01T10:00:00Z"), result[0].departureDate)
+        assertEquals(Instant.parse("2022-01-01T12:00:00Z"), result[0].arrivalDate)
+
+        // Assertions for the second flight
+        assertEquals("Lufthansa", result[1].airline)
+        assertEquals(400.0, result[1].fare)
+        assertEquals("LHR", result[1].departureAirportCode)
+        assertEquals("AMS", result[1].destinationAirportCode)
+        assertEquals(Instant.parse("2022-01-01T14:00:00Z"), result[1].departureDate)
+        assertEquals(Instant.parse("2022-01-01T16:00:00Z"), result[1].arrivalDate)
+    }
+
+    @Test
+    fun `searchFlights should return an empty list when no flights are available`() {
+        // Given
+        val flightSearchRequest = FlightSearchRequest(
+            origin = "LHR",
+            destination = "AMS",
+            departureDate = LocalDate.parse("2022-01-01"),
+            returnDate = LocalDate.parse("2022-01-10"),
+            numberOfPassengers = 2
+        )
+
+        val crazyAirSearchRequest = CrazyAirSearchRequest(
+            origin = "LHR",
+            destination = "AMS",
+            departureDate = flightSearchRequest.departureDate,
+            returnDate = flightSearchRequest.returnDate,
+            passengerCount = flightSearchRequest.numberOfPassengers
+        )
+
+        whenever(crazyAirClient.searchFlights(crazyAirSearchRequest)).thenReturn(emptyList())
+
+        // When
+        val result = crazyAirSupplier.searchFlights(flightSearchRequest)
+
+        // Then
+        assertTrue(result.isEmpty())
+    }
+}

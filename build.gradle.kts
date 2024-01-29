@@ -19,6 +19,7 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 	testImplementation("com.github.tomakehurst:wiremock:2.27.2")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
 }
 
 group = "org.deblock"
