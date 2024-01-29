@@ -3,9 +3,9 @@ package org.deblock.flights.service.supplier.crazyair
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.AbstractIntegrationTest
-import org.deblock.flights.service.supplier.toughjet.ToughJetClient
-import org.deblock.flights.service.supplier.toughjet.ToughJetFlight
-import org.deblock.flights.service.supplier.toughjet.ToughJetSearchRequest
+import org.deblock.flights.service.client.toughjet.ToughJetClient
+import org.deblock.flights.service.client.toughjet.ToughJetFlight
+import org.deblock.flights.service.client.toughjet.ToughJetSearchRequest
 import org.junit.jupiter.api.Test
 import java.time.Instant
 import java.time.LocalDate

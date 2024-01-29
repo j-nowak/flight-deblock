@@ -1,4 +1,4 @@
-package org.deblock.flights.service.supplier.crazyair
+package org.deblock.flights.service.client.crazyair
 
 import java.time.LocalDateTime
 

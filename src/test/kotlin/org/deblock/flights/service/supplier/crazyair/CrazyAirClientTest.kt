@@ -3,6 +3,9 @@ package org.deblock.flights.service.supplier.crazyair
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.AbstractIntegrationTest
+import org.deblock.flights.service.client.crazyair.CrazyAirClient
+import org.deblock.flights.service.client.crazyair.CrazyAirFlight
+import org.deblock.flights.service.client.crazyair.CrazyAirSearchRequest
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

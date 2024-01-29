@@ -1,4 +1,4 @@
-package org.deblock.flights.service.supplier.toughjet
+package org.deblock.flights.service.client.toughjet
 
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
