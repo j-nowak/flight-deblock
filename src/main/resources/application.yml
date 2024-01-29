@@ -8,3 +8,9 @@ server:
 logging:
   level:
     root: INFO
+
+crazyair:
+  url: http://localhost:8095/crazyair/search
+
+toughjet:
+  url: http://localhost:8095/toughjet/search
