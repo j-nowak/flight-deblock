@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 class CrazyAirClient(private val restTemplate: RestTemplate, private val crazyAirProperties: CrazyAirProperties) {
 
     fun searchFlights(request: CrazyAirSearchRequest): List<CrazyAirFlight> {
-        val url = buildCrazyAirUrl(request)
+        val url = buildUri(request)
 
         val responseEntity: ResponseEntity<Array<CrazyAirFlight>> = restTemplate.getForEntity(
             url,
@@ -21,7 +21,7 @@ class CrazyAirClient(private val restTemplate: RestTemplate, private val crazyAi
         return responseEntity.body?.map { it } ?: emptyList()
     }
 
-    private fun buildCrazyAirUrl(request: CrazyAirSearchRequest): URI {
+    private fun buildUri(request: CrazyAirSearchRequest): URI {
         val uriBuilder: UriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(crazyAirProperties.url)
             .queryParam("origin", request.origin)
             .queryParam("destination", request.destination)
