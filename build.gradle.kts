@@ -18,11 +18,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	testImplementation("com.github.tomakehurst:wiremock:2.27.2")
 }
 
 group = "org.deblock"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
+repositories {
+	mavenCentral()
+}
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
