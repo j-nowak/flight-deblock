@@ -6,7 +6,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.test.context.SpringBootTest
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -63,8 +62,8 @@ class CrazyAirClientTest(
                                     "cabinclass": "E",
                                     "departureAirportCode": "LHR",
                                     "destinationAirportCode": "AMS",
-                                    "departureDate": "2022-01-01T10:00:00Z",
-                                    "arrivalDate": "2022-01-01T12:00:00Z"
+                                    "departureDate": "2022-01-01T10:00:00",
+                                    "arrivalDate": "2022-01-01T12:00:00"
                                 },
                                 {
                                     "airline": "Lufthansa",
@@ -72,8 +71,8 @@ class CrazyAirClientTest(
                                     "cabinclass": "B",
                                     "departureAirportCode": "LHR",
                                     "destinationAirportCode": "AMS",
-                                    "departureDate": "2022-01-01T14:00:00Z",
-                                    "arrivalDate": "2022-01-01T16:00:00Z"
+                                    "departureDate": "2022-01-01T14:00:00",
+                                    "arrivalDate": "2022-01-01T16:00:00"
                                 }
                             ]
                             """.trimIndent()
@@ -93,8 +92,8 @@ class CrazyAirClientTest(
         assertThat(result[0].cabinclass).isEqualTo("E")
         assertThat(result[0].departureAirportCode).isEqualTo("LHR")
         assertThat(result[0].destinationAirportCode).isEqualTo("AMS")
-        assertThat(result[0].departureDate).isEqualTo(Instant.parse("2022-01-01T10:00:00Z"))
-        assertThat(result[0].arrivalDate).isEqualTo(Instant.parse("2022-01-01T12:00:00Z"))
+        assertThat(result[0].departureDate).isEqualTo(LocalDateTime.parse("2022-01-01T10:00:00"))
+        assertThat(result[0].arrivalDate).isEqualTo(LocalDateTime.parse("2022-01-01T12:00:00"))
 
         // Assertions for the second CrazyAirFlight
         assertThat(result[1].airline).isEqualTo("Lufthansa")
@@ -102,8 +101,8 @@ class CrazyAirClientTest(
         assertThat(result[1].cabinclass).isEqualTo("B")
         assertThat(result[1].departureAirportCode).isEqualTo("LHR")
         assertThat(result[1].destinationAirportCode).isEqualTo("AMS")
-        assertThat(result[1].departureDate).isEqualTo(Instant.parse("2022-01-01T14:00:00Z"))
-        assertThat(result[1].arrivalDate).isEqualTo(Instant.parse("2022-01-01T16:00:00Z"))
+        assertThat(result[1].departureDate).isEqualTo(LocalDateTime.parse("2022-01-01T14:00:00"))
+        assertThat(result[1].arrivalDate).isEqualTo(LocalDateTime.parse("2022-01-01T16:00:00"))
     }
 
     @Test

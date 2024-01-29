@@ -1,6 +1,6 @@
 package org.deblock.flights.service.supplier.crazyair
 
-import java.time.Instant
+import java.time.LocalDateTime
 
 data class CrazyAirFlight(
     val airline: String,
@@ -8,6 +8,6 @@ data class CrazyAirFlight(
     val cabinclass: String,
     val departureAirportCode: String,
     val destinationAirportCode: String,
-    val departureDate: Instant,
-    val arrivalDate: Instant
+    val departureDate: LocalDateTime,
+    val arrivalDate: LocalDateTime
 )
