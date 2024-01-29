@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -85,8 +86,24 @@ class CrazyAirClientTest(
 
         // Then
         assertThat(result).hasSize(2)
+
+        // Assertions for the first CrazyAirFlight
         assertThat(result[0].airline).isEqualTo("British Airways")
+        assertThat(result[0].price).isEqualTo(350.0)
+        assertThat(result[0].cabinclass).isEqualTo("E")
+        assertThat(result[0].departureAirportCode).isEqualTo("LHR")
+        assertThat(result[0].destinationAirportCode).isEqualTo("AMS")
+        assertThat(result[0].departureDate).isEqualTo(Instant.parse("2022-01-01T10:00:00Z"))
+        assertThat(result[0].arrivalDate).isEqualTo(Instant.parse("2022-01-01T12:00:00Z"))
+
+        // Assertions for the second CrazyAirFlight
         assertThat(result[1].airline).isEqualTo("Lufthansa")
+        assertThat(result[1].price).isEqualTo(400.0)
+        assertThat(result[1].cabinclass).isEqualTo("B")
+        assertThat(result[1].departureAirportCode).isEqualTo("LHR")
+        assertThat(result[1].destinationAirportCode).isEqualTo("AMS")
+        assertThat(result[1].departureDate).isEqualTo(Instant.parse("2022-01-01T14:00:00Z"))
+        assertThat(result[1].arrivalDate).isEqualTo(Instant.parse("2022-01-01T16:00:00Z"))
     }
 
     @Test
