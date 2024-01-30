@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service
 
 @Service
 class ToughJetSupplier(private val toughJetClient: ToughJetClient) : FlightSearchSupplier {
-
     override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
-        val toughJetSearchRequest = ToughJetSearchRequest(
-            from = request.origin,
-            to = request.destination,
-            outboundDate = request.departureDate,
-            inboundDate = request.returnDate,
-            numberOfAdults = request.numberOfPassengers
-        )
+        val toughJetSearchRequest =
+            ToughJetSearchRequest(
+                from = request.origin,
+                to = request.destination,
+                outboundDate = request.departureDate,
+                inboundDate = request.returnDate,
+                numberOfAdults = request.numberOfPassengers,
+            )
 
         val toughJetFlights = toughJetClient.searchFlights(toughJetSearchRequest)
 
@@ -38,10 +38,13 @@ class ToughJetSupplier(private val toughJetClient: ToughJetClient) : FlightSearc
         )
     }
 
-    private fun calculateFare(basePrice: Double, tax: Double, discount: Double): Double {
+    private fun calculateFare(
+        basePrice: Double,
+        tax: Double,
+        discount: Double,
+    ): Double {
         return (basePrice + tax) * (1 - discount / 100)
     }
-
 
     companion object {
         const val TOUGH_JET_SUPPLIER = "ToughJet"

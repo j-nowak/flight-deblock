@@ -7,7 +7,7 @@ import org.deblock.flights.service.Flight
 object FlightSearchMapper {
     fun map(searchResult: List<Flight>): FlightSearchResponseDTO {
         return FlightSearchResponseDTO(
-            searchResult.map { map(it) }
+            searchResult.map { map(it) },
         )
     }
 

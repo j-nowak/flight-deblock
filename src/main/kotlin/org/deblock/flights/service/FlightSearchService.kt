@@ -1,6 +1,10 @@
 package org.deblock.flights.service
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withTimeout
 import org.deblock.flights.service.supplier.FlightSearchSupplier
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -12,25 +16,27 @@ class FlightSearchService(
     private val flightSearchSuppliers: List<FlightSearchSupplier>,
     private val supplierTimeout: Duration,
 ) {
-    suspend fun searchFlights(request: FlightSearchRequest): List<Flight> = coroutineScope {
-        val deferredFlights = flightSearchSuppliers.map { supplier ->
-            async(Dispatchers.IO) {
-                try {
-                    withTimeout(supplierTimeout) {
-                        supplier.searchFlights(request)
+    suspend fun searchFlights(request: FlightSearchRequest): List<Flight> =
+        coroutineScope {
+            val deferredFlights =
+                flightSearchSuppliers.map { supplier ->
+                    async(Dispatchers.IO) {
+                        try {
+                            withTimeout(supplierTimeout) {
+                                supplier.searchFlights(request)
+                            }
+                        } catch (e: Exception) {
+                            // TODO: It would be good to inform the user, that some supplier failed and we return partial result.
+                            logger.error("Error while fetching flights from ${supplier.javaClass.simpleName}", e)
+                            emptyList()
+                        }
                     }
-                } catch (e: Exception) {
-                    // TODO: It would be good to inform the user, that some supplier failed and we return partial result.
-                    logger.error("Error while fetching flights from ${supplier.javaClass.simpleName}", e)
-                    emptyList()
                 }
-            }
+
+            val allFlights = deferredFlights.awaitAll().flatten().sortedBy { it.fare }
+
+            return@coroutineScope allFlights
         }
-
-        val allFlights = deferredFlights.awaitAll().flatten().sortedBy { it.fare }
-
-        return@coroutineScope allFlights
-    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(FlightSearchService::class.java)

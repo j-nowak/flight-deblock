@@ -7,5 +7,5 @@ data class CrazyAirSearchRequest(
     val destination: String,
     val departureDate: LocalDate,
     val returnDate: LocalDate,
-    val passengerCount: Int
+    val passengerCount: Int,
 )

@@ -11,7 +11,6 @@ import java.util.stream.Collectors
 
 @Service
 class CrazyAirSupplier(private val crazyAirClient: CrazyAirClient) : FlightSearchSupplier {
-
     override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
         val crazyAirSearchRequest = mapToCrazyAirSearchRequest(request)
         val crazyAirFlights = crazyAirClient.searchFlights(crazyAirSearchRequest)
@@ -24,7 +23,7 @@ class CrazyAirSupplier(private val crazyAirClient: CrazyAirClient) : FlightSearc
             destination = request.destination,
             departureDate = request.departureDate,
             returnDate = request.returnDate,
-            passengerCount = request.numberOfPassengers
+            passengerCount = request.numberOfPassengers,
         )
     }
 

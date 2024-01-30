@@ -7,5 +7,5 @@ data class ToughJetSearchRequest(
     val to: String,
     val outboundDate: LocalDate,
     val inboundDate: LocalDate,
-    val numberOfAdults: Int
+    val numberOfAdults: Int,
 )

@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestTemplate
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @Configuration
 @EnableConfigurationProperties(value = [CrazyAirProperties::class, ToughJetProperties::class])

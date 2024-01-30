@@ -1,28 +1,29 @@
 package org.deblock.flights.service.client.crazyair
 
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.AbstractIntegrationTest
-import org.deblock.flights.service.client.crazyair.CrazyAirClient
-import org.deblock.flights.service.client.crazyair.CrazyAirFlight
-import org.deblock.flights.service.client.crazyair.CrazyAirSearchRequest
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class CrazyAirClientTest(
-    private val crazyAirClient: CrazyAirClient
+    private val crazyAirClient: CrazyAirClient,
 ) : AbstractIntegrationTest() {
     @Test
     fun `searchFlights should return a list of CrazyAirFlight`() {
         // Given
-        val searchRequest = CrazyAirSearchRequest(
-            origin = "LHR",
-            destination = "AMS",
-            departureDate = LocalDateTime.parse("2022-01-01T10:00:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
-            returnDate = LocalDateTime.parse("2022-01-10T15:30:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
-            passengerCount = 2
-        )
+        val searchRequest =
+            CrazyAirSearchRequest(
+                origin = "LHR",
+                destination = "AMS",
+                departureDate = LocalDateTime.parse("2022-01-01T10:00:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
+                returnDate = LocalDateTime.parse("2022-01-10T15:30:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
+                passengerCount = 2,
+            )
 
         wireMockServer.stubFor(
             get(urlPathEqualTo("/crazyair/search"))
@@ -57,9 +58,9 @@ class CrazyAirClientTest(
                                     "arrivalDate": "2022-01-01T16:00:00"
                                 }
                             ]
-                            """.trimIndent()
-                        )
-                )
+                            """.trimIndent(),
+                        ),
+                ),
         )
 
         // When
@@ -90,13 +91,14 @@ class CrazyAirClientTest(
     @Test
     fun `searchFlights should return an empty list for no results`() {
         // Given
-        val searchRequest = CrazyAirSearchRequest(
-            origin = "LHR",
-            destination = "AMS",
-            departureDate = LocalDateTime.parse("2022-01-01T10:00:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
-            returnDate = LocalDateTime.parse("2022-01-10T15:30:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
-            passengerCount = 2
-        )
+        val searchRequest =
+            CrazyAirSearchRequest(
+                origin = "LHR",
+                destination = "AMS",
+                departureDate = LocalDateTime.parse("2022-01-01T10:00:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
+                returnDate = LocalDateTime.parse("2022-01-10T15:30:00", DateTimeFormatter.ISO_DATE_TIME).toLocalDate(),
+                passengerCount = 2,
+            )
 
         wireMockServer.stubFor(
             get(urlPathEqualTo("/crazyair/search"))
@@ -104,8 +106,8 @@ class CrazyAirClientTest(
                     aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody("[]")
-                )
+                        .withBody("[]"),
+                ),
         )
 
         // When

@@ -10,5 +10,5 @@ data class ToughJetFlight(
     val departureAirportName: String,
     val arrivalAirportName: String,
     val outboundDateTime: Instant,
-    val inboundDateTime: Instant
+    val inboundDateTime: Instant,
 )

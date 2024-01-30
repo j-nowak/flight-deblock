@@ -55,6 +55,6 @@ fun FlightSearchRequestDTO.toSearchRequest(): FlightSearchRequest {
         destination = this.destination,
         departureDate = this.departureDate,
         returnDate = this.returnDate,
-        numberOfPassengers = this.numberOfPassengers
+        numberOfPassengers = this.numberOfPassengers,
     )
 }

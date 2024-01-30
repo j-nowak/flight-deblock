@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractIntegrationTest {
-    protected val wireMockServer : WireMockServer = WireMockServer(8095)
+    protected val wireMockServer: WireMockServer = WireMockServer(8095)
 
     @BeforeAll
     fun beforeAll() {

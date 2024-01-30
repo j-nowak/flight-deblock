@@ -9,5 +9,5 @@ data class CrazyAirFlight(
     val departureAirportCode: String,
     val destinationAirportCode: String,
     val departureDate: LocalDateTime,
-    val arrivalDate: LocalDateTime
+    val arrivalDate: LocalDateTime,
 )

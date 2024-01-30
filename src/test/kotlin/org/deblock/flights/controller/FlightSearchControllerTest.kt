@@ -1,7 +1,9 @@
 package org.deblock.flights.controller
 
 import org.deblock.flights.AbstractIntegrationTest
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.containsString
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.test.web.servlet.MockMvc
@@ -11,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @AutoConfigureMockMvc
 class FlightSearchControllerTest(
-    private val mockMvc: MockMvc
+    private val mockMvc: MockMvc,
 ) : AbstractIntegrationTest() {
     @Test
     fun `returns flight data from a single supplier if other are empty`() {

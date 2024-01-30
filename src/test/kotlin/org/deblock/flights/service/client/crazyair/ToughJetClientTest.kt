@@ -1,6 +1,9 @@
 package org.deblock.flights.service.client.crazyair
 
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.AbstractIntegrationTest
 import org.deblock.flights.service.client.toughjet.ToughJetClient
@@ -11,20 +14,21 @@ import java.time.Instant
 import java.time.LocalDate
 
 class ToughJetClientTest(
-    private val toughJetClient: ToughJetClient
+    private val toughJetClient: ToughJetClient,
 ) : AbstractIntegrationTest() {
     @Test
     fun `searchFlights should return a list of ToughJetFlight`() {
         // Given
         val outBoundDate = "2022-01-10"
         val inboundDate = "2022-01-10"
-        val searchRequest = ToughJetSearchRequest(
-            from = "LHR",
-            to = "AMS",
-            outboundDate = LocalDate.parse(outBoundDate),
-            inboundDate = LocalDate.parse(inboundDate),
-            numberOfAdults = 2
-        )
+        val searchRequest =
+            ToughJetSearchRequest(
+                from = "LHR",
+                to = "AMS",
+                outboundDate = LocalDate.parse(outBoundDate),
+                inboundDate = LocalDate.parse(inboundDate),
+                numberOfAdults = 2,
+            )
 
         wireMockServer.stubFor(
             get(urlPathEqualTo("/toughjet/search"))
@@ -51,9 +55,9 @@ class ToughJetClientTest(
                                     "inboundDateTime": "2022-01-10T15:30:00Z"
                                 }
                             ]
-                            """.trimIndent()
-                        )
-                )
+                            """.trimIndent(),
+                        ),
+                ),
         )
 
         // When
@@ -75,13 +79,14 @@ class ToughJetClientTest(
     @Test
     fun `searchFlights should return an empty list for no results`() {
         // Given
-        val searchRequest = ToughJetSearchRequest(
-            from = "LHR",
-            to = "AMS",
-            outboundDate = LocalDate.parse("2022-01-10"),
-            inboundDate = LocalDate.parse("2022-01-10"),
-            numberOfAdults = 2
-        )
+        val searchRequest =
+            ToughJetSearchRequest(
+                from = "LHR",
+                to = "AMS",
+                outboundDate = LocalDate.parse("2022-01-10"),
+                inboundDate = LocalDate.parse("2022-01-10"),
+                numberOfAdults = 2,
+            )
 
         wireMockServer.stubFor(
             get(urlPathEqualTo("/toughjet/search"))
@@ -89,8 +94,8 @@ class ToughJetClientTest(
                     aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody("[]")
-                )
+                        .withBody("[]"),
+                ),
         )
 
         // When

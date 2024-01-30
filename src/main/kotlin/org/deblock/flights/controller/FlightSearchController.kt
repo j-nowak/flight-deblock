@@ -1,10 +1,8 @@
 package org.deblock.flights.controller
 
 import jakarta.validation.Valid
-import org.deblock.flights.controller.mapper.FlightSearchMapper
 import org.deblock.flights.controller.dto.FlightSearchRequestDTO
 import org.deblock.flights.controller.dto.FlightSearchResponseDTO
-import org.deblock.flights.controller.dto.toSearchRequest
 import org.deblock.flights.service.FlightSearchService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
