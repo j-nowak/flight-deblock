@@ -7,6 +7,9 @@ import org.deblock.flights.service.client.crazyair.CrazyAirSearchRequest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.time.Instant
@@ -82,6 +85,8 @@ internal class CrazyAirSupplierTest {
         assertEquals("AMS", result[1].destinationAirportCode)
         assertEquals(Instant.parse("2022-01-01T14:00:00Z"), result[1].departureDate)
         assertEquals(Instant.parse("2022-01-01T16:00:00Z"), result[1].arrivalDate)
+
+        verify(crazyAirClient, times(1)).searchFlights(crazyAirSearchRequest)
     }
 
     @Test
