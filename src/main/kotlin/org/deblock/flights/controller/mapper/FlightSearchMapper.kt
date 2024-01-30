@@ -4,7 +4,6 @@ import org.deblock.flights.controller.dto.FlightDTO
 import org.deblock.flights.controller.dto.FlightSearchResponseDTO
 import org.deblock.flights.service.Flight
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.ZoneOffset
 
 object FlightSearchMapper {

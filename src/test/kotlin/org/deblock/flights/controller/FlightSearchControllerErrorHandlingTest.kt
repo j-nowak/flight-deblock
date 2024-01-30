@@ -2,7 +2,6 @@ package org.deblock.flights.controller
 
 import org.deblock.flights.AbstractIntegrationTest
 import org.hamcrest.Matchers.containsString
-import org.hamcrest.Matchers.hasSize
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

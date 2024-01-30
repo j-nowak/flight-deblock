@@ -23,9 +23,10 @@ class FlightSearchController(
     fun search(
         @Valid @RequestBody flightSearchRequestDTO: FlightSearchRequestDTO,
     ): FlightSearchResponseDTO {
-        val searchResult = runBlocking {
-            flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
-        }
+        val searchResult =
+            runBlocking {
+                flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
+            }
         return FlightSearchMapper.map(searchResult)
     }
 }
