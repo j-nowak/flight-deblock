@@ -16,10 +16,12 @@ dependencies {
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 	testImplementation("com.github.tomakehurst:wiremock:2.27.2")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
 
 group = "org.deblock"

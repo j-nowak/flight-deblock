@@ -22,7 +22,8 @@ class FlightSearchController(
     fun search(
         @Valid @RequestBody flightSearchRequestDTO: FlightSearchRequestDTO,
     ): FlightSearchResponseDTO {
-        val searchResult = flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
-        return FlightSearchMapper.map(searchResult)
+        TODO()
+//        val searchResult = flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
+//        return FlightSearchMapper.map(searchResult)
     }
 }
