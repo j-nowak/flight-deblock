@@ -10,18 +10,19 @@ plugins {
 }
 
 val springBootVersion: String by project
+val coroutinesVersion = "1.7.3"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	implementation("org.springframework.boot:spring-boot-starter-validation:${springBootVersion}")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 	testImplementation("com.github.tomakehurst:wiremock:2.27.2")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
-	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesVersion}")
 }
 
 group = "org.deblock"
