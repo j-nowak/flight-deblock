@@ -11,10 +11,9 @@ logging:
   level:
     root: INFO
 
-
-
-crazyair:
-  url: http://localhost:8095/crazyair/search
-
-toughjet:
-  url: http://localhost:8095/toughjet/search
+suppliers:
+  timeout: 60
+  crazyair:
+    url: http://localhost:8095/crazyair/search
+  toughjet:
+    url: http://localhost:8095/toughjet/search

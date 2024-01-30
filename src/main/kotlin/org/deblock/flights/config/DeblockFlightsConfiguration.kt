@@ -5,6 +5,7 @@ import org.deblock.flights.service.client.crazyair.CrazyAirProperties
 import org.deblock.flights.service.client.toughjet.ToughJetProperties
 import org.deblock.flights.service.supplier.CrazyAirSupplier
 import org.deblock.flights.service.supplier.ToughJetSupplier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,7 +14,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @Configuration
 @EnableConfigurationProperties(value = [CrazyAirProperties::class, ToughJetProperties::class])
-class DeblockFlightsConfiguration {
+class DeblockFlightsConfiguration(
+    @Value("\${suppliers.timeout}") private val suppliersTimeout: Int,
+) {
     @Bean
     fun restTemplate(): RestTemplate {
         return RestTemplate()
@@ -26,7 +29,7 @@ class DeblockFlightsConfiguration {
     ): FlightSearchService {
         return FlightSearchService(
             listOf(crazyAirSupplier, toughJetSupplier),
-            60.seconds,
+            suppliersTimeout.seconds,
         )
     }
 }
