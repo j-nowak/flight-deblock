@@ -12,6 +12,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -47,7 +48,7 @@ internal class CrazyAirSupplierTest {
                 listOf(
                     CrazyAirFlight(
                         airline = "British Airways",
-                        price = 350.0,
+                        price = BigDecimal(350),
                         cabinclass = "E",
                         departureAirportCode = "LHR",
                         destinationAirportCode = "AMS",
@@ -56,7 +57,7 @@ internal class CrazyAirSupplierTest {
                     ),
                     CrazyAirFlight(
                         airline = "Lufthansa",
-                        price = 400.0,
+                        price = BigDecimal(400),
                         cabinclass = "B",
                         departureAirportCode = "LHR",
                         destinationAirportCode = "AMS",
@@ -75,7 +76,7 @@ internal class CrazyAirSupplierTest {
 
             // Assertions for the first flight
             assertEquals("British Airways", result[0].airline)
-            assertEquals(350.0, result[0].fare)
+            assertEquals(BigDecimal(350), result[0].fare)
             assertEquals("LHR", result[0].departureAirportCode)
             assertEquals("AMS", result[0].destinationAirportCode)
             assertEquals(Instant.parse("2022-01-01T10:00:00Z"), result[0].departureDate)
@@ -83,7 +84,7 @@ internal class CrazyAirSupplierTest {
 
             // Assertions for the second flight
             assertEquals("Lufthansa", result[1].airline)
-            assertEquals(400.0, result[1].fare)
+            assertEquals(BigDecimal(400), result[1].fare)
             assertEquals("LHR", result[1].departureAirportCode)
             assertEquals("AMS", result[1].destinationAirportCode)
             assertEquals(Instant.parse("2022-01-01T14:00:00Z"), result[1].departureDate)

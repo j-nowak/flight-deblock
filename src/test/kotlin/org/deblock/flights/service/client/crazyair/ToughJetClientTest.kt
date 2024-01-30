@@ -10,6 +10,7 @@ import org.deblock.flights.service.client.toughjet.ToughJetClient
 import org.deblock.flights.service.client.toughjet.ToughJetFlight
 import org.deblock.flights.service.client.toughjet.ToughJetSearchRequest
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 
@@ -67,9 +68,9 @@ class ToughJetClientTest(
         assertThat(result).hasSize(1)
         val toughJetFlight = result[0]
         assertThat(toughJetFlight.carrier).isEqualTo("ToughJet")
-        assertThat(toughJetFlight.basePrice).isEqualTo(300.0)
-        assertThat(toughJetFlight.tax).isEqualTo(50.0)
-        assertThat(toughJetFlight.discount).isEqualTo(10.0)
+        assertThat(toughJetFlight.basePrice).isEqualTo(BigDecimal("300.0"))
+        assertThat(toughJetFlight.tax).isEqualTo(BigDecimal("50.0"))
+        assertThat(toughJetFlight.discount).isEqualTo(BigDecimal(10))
         assertThat(toughJetFlight.departureAirportName).isEqualTo("LHR")
         assertThat(toughJetFlight.arrivalAirportName).isEqualTo("AMS")
         assertThat(toughJetFlight.outboundDateTime).isEqualTo(Instant.parse("2022-01-01T10:00:00Z"))

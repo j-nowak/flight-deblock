@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.math.BigDecimal
 
 @AutoConfigureMockMvc
 class FlightSearchControllerTest(
@@ -83,21 +84,21 @@ class FlightSearchControllerTest(
             .andExpect(jsonPath("$.flights", hasSize<Any>(3)))
             .andExpect(jsonPath("$.flights[0].airline").value("British Airways"))
             .andExpect(jsonPath("$.flights[0].supplier").value("CrazyAir"))
-            .andExpect(jsonPath("$.flights[0].fare").value(350.0))
+            .andExpect(jsonPath("$.flights[0].fare").value(BigDecimal("350.0")))
             .andExpect(jsonPath("$.flights[0].departureAirportCode").value("LHR"))
             .andExpect(jsonPath("$.flights[0].destinationAirportCode").value("AMS"))
             .andExpect(jsonPath("$.flights[0].departureDate").value("2022-01-01T10:00:00"))
             .andExpect(jsonPath("$.flights[0].arrivalDate").value("2022-01-01T12:00:00"))
             .andExpect(jsonPath("$.flights[1].airline").value("Lufthansa"))
             .andExpect(jsonPath("$.flights[1].supplier").value("ToughJet"))
-            .andExpect(jsonPath("$.flights[1].fare").value(360.0))
+            .andExpect(jsonPath("$.flights[1].fare").value(BigDecimal("360.0")))
             .andExpect(jsonPath("$.flights[1].departureAirportCode").value("LHR"))
             .andExpect(jsonPath("$.flights[1].destinationAirportCode").value("AMS"))
             .andExpect(jsonPath("$.flights[1].departureDate").value("2022-01-01T10:00:00"))
             .andExpect(jsonPath("$.flights[1].arrivalDate").value("2022-01-01T15:30:00"))
             .andExpect(jsonPath("$.flights[2].airline").value("Lufthansa"))
             .andExpect(jsonPath("$.flights[2].supplier").value("CrazyAir"))
-            .andExpect(jsonPath("$.flights[2].fare").value(500.0))
+            .andExpect(jsonPath("$.flights[2].fare").value(BigDecimal("500.0")))
             .andExpect(jsonPath("$.flights[2].departureAirportCode").value("LHR"))
             .andExpect(jsonPath("$.flights[2].destinationAirportCode").value("AMS"))
             .andExpect(jsonPath("$.flights[2].departureDate").value("2022-01-01T14:00:00"))

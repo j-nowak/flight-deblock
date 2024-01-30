@@ -6,6 +6,7 @@ import org.deblock.flights.service.client.toughjet.ToughJetClient
 import org.deblock.flights.service.client.toughjet.ToughJetFlight
 import org.deblock.flights.service.client.toughjet.ToughJetSearchRequest
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class ToughJetSupplier(private val toughJetClient: ToughJetClient) : FlightSearchSupplier {
@@ -39,11 +40,13 @@ class ToughJetSupplier(private val toughJetClient: ToughJetClient) : FlightSearc
     }
 
     private fun calculateFare(
-        basePrice: Double,
-        tax: Double,
-        discount: Double,
-    ): Double {
-        return (basePrice + tax) * (1 - discount / 100)
+        basePrice: BigDecimal,
+        tax: BigDecimal,
+        discount: BigDecimal,
+    ): BigDecimal {
+        val fullPrice = basePrice.add(tax)
+        val discountAmount = fullPrice.multiply(discount.divide(BigDecimal(100)))
+        return fullPrice - discountAmount
     }
 
     companion object {

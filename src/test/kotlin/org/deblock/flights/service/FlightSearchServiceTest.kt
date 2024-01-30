@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.seconds
@@ -20,11 +21,11 @@ class FlightSearchServiceTest {
             // Given
             val supplier1 =
                 mockSupplier(
-                    listOf(flight("A", 200.0, "Supplier1"), flight("B", 150.0, "Supplier1")),
+                    listOf(flight("A", BigDecimal(200), "Supplier1"), flight("B", BigDecimal(150), "Supplier1")),
                 )
             val supplier2 =
                 mockSupplier(
-                    listOf(flight("C", 180.0, "Supplier2"), flight("D", 220.0, "Supplier2")),
+                    listOf(flight("C", BigDecimal(180), "Supplier2"), flight("D", BigDecimal(220), "Supplier2")),
                 )
 
             val service = FlightSearchService(listOf(supplier1, supplier2), 5.seconds)
@@ -35,13 +36,13 @@ class FlightSearchServiceTest {
             // Then
             assertEquals(4, result.size)
             assertEquals("B", result[0].airline)
-            assertEquals(150.0, result[0].fare)
+            assertEquals(BigDecimal(150), result[0].fare)
             assertEquals("C", result[1].airline)
-            assertEquals(180.0, result[1].fare)
+            assertEquals(BigDecimal(180), result[1].fare)
             assertEquals("A", result[2].airline)
-            assertEquals(200.0, result[2].fare)
+            assertEquals(BigDecimal(200), result[2].fare)
             assertEquals("D", result[3].airline)
-            assertEquals(220.0, result[3].fare)
+            assertEquals(BigDecimal(220), result[3].fare)
         }
 
     @Test
@@ -52,7 +53,7 @@ class FlightSearchServiceTest {
             val supplier2 =
                 mockSupplier(
                     listOf(
-                        flight(airline = "TestAir", fare = 100.0),
+                        flight(airline = "TestAir", fare = BigDecimal(100)),
                     ),
                 )
 
@@ -68,7 +69,7 @@ class FlightSearchServiceTest {
             // Then
             assertEquals(1, result.size)
             assertEquals("TestAir", result[0].airline)
-            assertEquals(100.0, result[0].fare)
+            assertEquals(BigDecimal(100), result[0].fare)
         }
 
     @Test
@@ -100,7 +101,7 @@ class FlightSearchServiceTest {
             val supplier2 =
                 mockSupplier(
                     listOf(
-                        flight(airline = "TestAir", fare = 100.0),
+                        flight(airline = "TestAir", fare = BigDecimal(100)),
                     ),
                 )
 
@@ -116,7 +117,7 @@ class FlightSearchServiceTest {
             // Then
             assertEquals(1, result.size)
             assertEquals("TestAir", result[0].airline)
-            assertEquals(100.0, result[0].fare)
+            assertEquals(BigDecimal(100), result[0].fare)
         }
 
     @Test
@@ -147,7 +148,7 @@ class FlightSearchServiceTest {
             val supplier1 =
                 mockSupplier(
                     listOf(
-                        flight(airline = "TestAir1", fare = 100.0, "Supplier1"),
+                        flight(airline = "TestAir1", fare = BigDecimal(100), "Supplier1"),
                     ),
                 )
             val timeoutSupplier: FlightSearchSupplier =
@@ -155,7 +156,7 @@ class FlightSearchServiceTest {
                     override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
                         // Simulate a long-running operation causing a timeout
                         delay(5.seconds)
-                        return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+                        return listOf(flight(airline = "TestAir2", fare = BigDecimal(100), "Supplier2"))
                     }
                 }
 
@@ -181,7 +182,7 @@ class FlightSearchServiceTest {
                     override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
                         // Simulate a long-running operation causing a timeout
                         delay(5.seconds)
-                        return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+                        return listOf(flight(airline = "TestAir2", fare = BigDecimal(100), "Supplier2"))
                     }
                 }
             val timeoutSupplier2: FlightSearchSupplier =
@@ -189,7 +190,7 @@ class FlightSearchServiceTest {
                     override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
                         // Simulate a long-running operation causing a timeout
                         delay(5.seconds)
-                        return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+                        return listOf(flight(airline = "TestAir2", fare = BigDecimal(100), "Supplier2"))
                     }
                 }
 
@@ -214,7 +215,7 @@ class FlightSearchServiceTest {
 
     private fun flight(
         airline: String,
-        fare: Double,
+        fare: BigDecimal,
         supplier: String = "MockSupplier",
     ): Flight {
         return Flight(

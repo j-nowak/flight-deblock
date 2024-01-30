@@ -12,6 +12,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
 
@@ -46,9 +47,9 @@ internal class ToughJetSupplierTest {
                 listOf(
                     ToughJetFlight(
                         carrier = "ToughJet",
-                        basePrice = 300.0,
-                        tax = 50.0,
-                        discount = 10.0,
+                        basePrice = BigDecimal(300),
+                        tax = BigDecimal(50),
+                        discount = BigDecimal(10),
                         departureAirportName = "LHR",
                         arrivalAirportName = "AMS",
                         outboundDateTime = Instant.parse("2022-01-01T10:00:00Z"),
@@ -56,9 +57,9 @@ internal class ToughJetSupplierTest {
                     ),
                     ToughJetFlight(
                         carrier = "ToughJet",
-                        basePrice = 400.0,
-                        tax = 50.0,
-                        discount = 10.0,
+                        basePrice = BigDecimal(400),
+                        tax = BigDecimal(50),
+                        discount = BigDecimal(10),
                         departureAirportName = "LHR",
                         arrivalAirportName = "AMS",
                         outboundDateTime = Instant.parse("2022-01-01T14:00:00Z"),
@@ -77,7 +78,7 @@ internal class ToughJetSupplierTest {
             // Assertions for the first flight
             assertThat(result[0].airline).isEqualTo("ToughJet")
             assertThat(result[0].supplier).isEqualTo(ToughJetSupplier.TOUGH_JET_SUPPLIER)
-            assertThat(result[0].fare).isEqualTo(315.0)
+            assertThat(result[0].fare).isEqualTo(BigDecimal("315.0"))
             assertThat(result[0].departureAirportCode).isEqualTo("LHR")
             assertThat(result[0].destinationAirportCode).isEqualTo("AMS")
             assertThat(result[0].departureDate).isEqualTo(Instant.parse("2022-01-01T10:00:00Z"))
@@ -86,7 +87,7 @@ internal class ToughJetSupplierTest {
             // Assertions for the second flight
             assertThat(result[1].airline).isEqualTo("ToughJet")
             assertThat(result[1].supplier).isEqualTo(ToughJetSupplier.TOUGH_JET_SUPPLIER)
-            assertThat(result[1].fare).isEqualTo(405.0)
+            assertThat(result[1].fare).isEqualTo(BigDecimal("405.0"))
             assertThat(result[1].departureAirportCode).isEqualTo("LHR")
             assertThat(result[1].destinationAirportCode).isEqualTo("AMS")
             assertThat(result[1].departureDate).isEqualTo(Instant.parse("2022-01-01T14:00:00Z"))

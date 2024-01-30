@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.AbstractIntegrationTest
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -71,7 +72,7 @@ class CrazyAirClientTest(
 
         // Assertions for the first CrazyAirFlight
         assertThat(result[0].airline).isEqualTo("British Airways")
-        assertThat(result[0].price).isEqualTo(350.0)
+        assertThat(result[0].price).isEqualTo(BigDecimal("350.0"))
         assertThat(result[0].cabinclass).isEqualTo("E")
         assertThat(result[0].departureAirportCode).isEqualTo("LHR")
         assertThat(result[0].destinationAirportCode).isEqualTo("AMS")
@@ -80,7 +81,7 @@ class CrazyAirClientTest(
 
         // Assertions for the second CrazyAirFlight
         assertThat(result[1].airline).isEqualTo("Lufthansa")
-        assertThat(result[1].price).isEqualTo(400.0)
+        assertThat(result[1].price).isEqualTo(BigDecimal("400.0"))
         assertThat(result[1].cabinclass).isEqualTo("B")
         assertThat(result[1].departureAirportCode).isEqualTo("LHR")
         assertThat(result[1].destinationAirportCode).isEqualTo("AMS")
