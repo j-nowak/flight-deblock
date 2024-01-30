@@ -12,7 +12,7 @@ import java.util.stream.Collectors
 @Service
 class CrazyAirSupplier(private val crazyAirClient: CrazyAirClient) : FlightSearchSupplier {
 
-    override fun searchFlights(request: FlightSearchRequest): List<Flight> {
+    override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
         val crazyAirSearchRequest = mapToCrazyAirSearchRequest(request)
         val crazyAirFlights = crazyAirClient.searchFlights(crazyAirSearchRequest)
         return mapToFlights(crazyAirFlights)

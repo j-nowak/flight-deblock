@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class ToughJetSupplier(private val toughJetClient: ToughJetClient) : FlightSearchSupplier {
 
-    override fun searchFlights(request: FlightSearchRequest): List<Flight> {
+    override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
         val toughJetSearchRequest = ToughJetSearchRequest(
             from = request.origin,
             to = request.destination,

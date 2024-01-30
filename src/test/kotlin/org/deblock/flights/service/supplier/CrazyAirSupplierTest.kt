@@ -1,5 +1,6 @@
 package org.deblock.flights.service.supplier
 
+import kotlinx.coroutines.test.runTest
 import org.deblock.flights.service.FlightSearchRequest
 import org.deblock.flights.service.client.crazyair.CrazyAirClient
 import org.deblock.flights.service.client.crazyair.CrazyAirFlight
@@ -23,7 +24,7 @@ internal class CrazyAirSupplierTest {
     private val crazyAirSupplier = CrazyAirSupplier(crazyAirClient)
 
     @Test
-    fun `searchFlights should return a list of Flight`() {
+    fun `searchFlights should return a list of Flight`() = runTest {
         // Given
         val flightSearchRequest = FlightSearchRequest(
             origin = "LHR",
@@ -90,7 +91,7 @@ internal class CrazyAirSupplierTest {
     }
 
     @Test
-    fun `searchFlights should return an empty list when no flights are available`() {
+    fun `searchFlights should return an empty list when no flights are available`() = runTest {
         // Given
         val flightSearchRequest = FlightSearchRequest(
             origin = "LHR",

@@ -1,5 +1,6 @@
 package org.deblock.flights.service.supplier
 
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.deblock.flights.service.FlightSearchRequest
 import org.deblock.flights.service.client.toughjet.ToughJetClient
@@ -18,7 +19,7 @@ internal class ToughJetSupplierTest {
     private val toughJetSupplier = ToughJetSupplier(toughJetClient)
 
     @Test
-    fun `searchFlights should return a list of Flight`() {
+    fun `searchFlights should return a list of Flight`() = runTest {
         // Given
         val request = FlightSearchRequest(
             origin = "LHR",
@@ -89,7 +90,7 @@ internal class ToughJetSupplierTest {
     }
 
     @Test
-    fun `searchFlights should return an empty list when ToughJetClient returns no flights`() {
+    fun `searchFlights should return an empty list when ToughJetClient returns no flights`() = runTest {
         // Given
         val request = FlightSearchRequest(
             origin = "LHR",

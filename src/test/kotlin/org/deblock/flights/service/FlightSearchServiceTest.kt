@@ -1,6 +1,6 @@
 package org.deblock.flights.service
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.deblock.flights.service.supplier.FlightSearchSupplier
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,10 +11,8 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import java.time.Instant
 import java.time.LocalDate
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration.Companion.seconds
 
-@ExperimentalCoroutinesApi
 class FlightSearchServiceTest {
 
     @Test
@@ -27,7 +25,7 @@ class FlightSearchServiceTest {
             listOf(flight("C", 180.0, "Supplier2"), flight("D", 220.0, "Supplier2"))
         )
 
-        val service = FlightSearchService(listOf(supplier1, supplier2), 5.toDuration(DurationUnit.SECONDS))
+        val service = FlightSearchService(listOf(supplier1, supplier2), 5.seconds)
 
         // When
         val result = service.searchFlights(searchRequest())
@@ -54,7 +52,7 @@ class FlightSearchServiceTest {
 
         val service = FlightSearchService(
             listOf(supplier1, supplier2),
-            supplierTimeout = 5.toDuration(DurationUnit.SECONDS)
+            supplierTimeout = 5.seconds
         )
 
         // When
@@ -74,7 +72,7 @@ class FlightSearchServiceTest {
 
         val service = FlightSearchService(
             listOf(supplier1, supplier2),
-            supplierTimeout = 5.toDuration(DurationUnit.SECONDS)
+            supplierTimeout = 5.seconds
         )
 
         // When
@@ -84,7 +82,105 @@ class FlightSearchServiceTest {
         assertTrue(result.isEmpty())
     }
 
-    private fun mockSupplier(flights: List<Flight>): FlightSearchSupplier {
+    @Test
+    fun `searchFlights should return results from the other supplier when one throws an error`() = runTest {
+        // Given
+        val supplier1 = mock<FlightSearchSupplier>()
+        whenever(supplier1.searchFlights(any())).thenThrow(RuntimeException())
+        val supplier2 = mockSupplier(listOf(
+            flight(airline = "TestAir", fare = 100.0)
+        ))
+
+        val service = FlightSearchService(
+            listOf(supplier1, supplier2),
+            supplierTimeout = 5.seconds
+        )
+
+        // When
+        val result = service.searchFlights(searchRequest())
+
+        // Then
+        assertEquals(1, result.size)
+        assertEquals("TestAir", result[0].airline)
+        assertEquals(100.0, result[0].fare)
+    }
+
+    @Test
+    fun `searchFlights should return empty list when all suppliers throw an error`() = runTest {
+        // Given
+        val supplier1 = mock<FlightSearchSupplier>()
+        whenever(supplier1.searchFlights(any())).thenThrow(RuntimeException())
+        val supplier2 = mock<FlightSearchSupplier>()
+        whenever(supplier2.searchFlights(any())).thenThrow(RuntimeException())
+
+        val service = FlightSearchService(
+            listOf(supplier1, supplier2),
+            supplierTimeout = 5.seconds
+        )
+
+        // When
+        val result = service.searchFlights(searchRequest())
+
+        // Then
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `searchFlights should handle timeout for one supplier`() = runTest {
+        val supplier1 = mockSupplier(listOf(
+            flight(airline = "TestAir1", fare = 100.0, "Supplier1")
+        ))
+        val timeoutSupplier: FlightSearchSupplier = object : FlightSearchSupplier {
+            override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
+                // Simulate a long-running operation causing a timeout
+                delay(5.seconds)
+                return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+            }
+        }
+
+        val flightSearchService = FlightSearchService(
+            listOf(supplier1, timeoutSupplier),
+            supplierTimeout = 1.seconds
+        )
+
+        val result = flightSearchService.searchFlights(searchRequest())
+
+        assertEquals(1, result.size)
+        assertEquals("TestAir1", result[0].airline)
+        assertEquals("Supplier1", result[0].supplier)
+    }
+
+    @Test
+    fun `searchFlights should return empty list when all suppliers timeout`() = runTest {
+        // Given
+        val timeoutSupplier1: FlightSearchSupplier = object : FlightSearchSupplier {
+            override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
+                // Simulate a long-running operation causing a timeout
+                delay(5.seconds)
+                return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+            }
+        }
+        val timeoutSupplier2: FlightSearchSupplier = object : FlightSearchSupplier {
+            override suspend fun searchFlights(request: FlightSearchRequest): List<Flight> {
+                // Simulate a long-running operation causing a timeout
+                delay(5.seconds)
+                return listOf(flight(airline = "TestAir2", fare = 100.0, "Supplier2"))
+            }
+        }
+
+        val service = FlightSearchService(
+            listOf(timeoutSupplier1, timeoutSupplier2),
+            supplierTimeout = 1.seconds
+        )
+
+        // When
+        val result = service.searchFlights(searchRequest())
+
+        // Then
+        assertTrue(result.isEmpty())
+    }
+
+    private suspend fun mockSupplier(flights: List<Flight>): FlightSearchSupplier {
         val mockSupplier = mock<FlightSearchSupplier>()
         whenever(mockSupplier.searchFlights(any())).thenReturn(flights)
         return mockSupplier

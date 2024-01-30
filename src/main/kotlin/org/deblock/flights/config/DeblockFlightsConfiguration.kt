@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestTemplate
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -27,7 +28,7 @@ class DeblockFlightsConfiguration {
     ): FlightSearchService {
         return FlightSearchService(
             listOf(crazyAirSupplier, toughJetSupplier),
-            60.toDuration(DurationUnit.SECONDS),
+            60.seconds,
         )
     }
 }
