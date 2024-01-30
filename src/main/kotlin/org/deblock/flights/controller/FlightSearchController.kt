@@ -1,7 +1,6 @@
 package org.deblock.flights.controller
 
 import jakarta.validation.Valid
-import kotlinx.coroutines.runBlocking
 import org.deblock.flights.controller.dto.FlightSearchRequestDTO
 import org.deblock.flights.controller.dto.FlightSearchResponseDTO
 import org.deblock.flights.controller.dto.toSearchRequest
@@ -23,10 +22,7 @@ class FlightSearchController(
     fun search(
         @Valid @RequestBody flightSearchRequestDTO: FlightSearchRequestDTO,
     ): FlightSearchResponseDTO {
-        val searchResult =
-            runBlocking {
-                flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
-            }
+        val searchResult = flightSearchService.searchFlights(flightSearchRequestDTO.toSearchRequest())
         return FlightSearchMapper.map(searchResult)
     }
 }

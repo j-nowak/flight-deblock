@@ -7,19 +7,26 @@ import org.deblock.flights.service.supplier.CrazyAirSupplier
 import org.deblock.flights.service.supplier.ToughJetSupplier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestTemplate
+import java.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 @Configuration
 @EnableConfigurationProperties(value = [CrazyAirProperties::class, ToughJetProperties::class])
 class DeblockFlightsConfiguration(
-    @Value("\${suppliers.timeout}") private val suppliersTimeout: Int,
+    @Value("\${suppliers.timeout}") private val suppliersTimeout: Long,
 ) {
     @Bean
-    fun restTemplate(): RestTemplate {
-        return RestTemplate()
+    fun restTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate {
+        val factory =
+            SimpleClientHttpRequestFactory().apply {
+                setReadTimeout(Duration.ofSeconds(suppliersTimeout))
+            }
+        return RestTemplate(factory)
     }
 
     @Bean

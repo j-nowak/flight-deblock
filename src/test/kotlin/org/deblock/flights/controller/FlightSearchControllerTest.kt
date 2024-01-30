@@ -105,6 +105,34 @@ class FlightSearchControllerTest(
     }
 
     @Test
+    fun `returns flight data from a single supplier if other exceeds timeout`() {
+        stubCrazyAir(50000)
+        stubToughJet(1000)
+
+        val requestJson =
+            """
+            {
+                "origin": "LHR",
+                "destination": "AMS",
+                "departureDate": "2024-02-01",
+                "returnDate": "2024-02-10",
+                "numberOfPassengers": 2
+            }
+            """.trimIndent()
+
+        mockMvc.perform(
+            post("/api/flights/search")
+                .content(requestJson)
+                .contentType("application/json"),
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.flights").isArray)
+            .andExpect(jsonPath("$.flights", hasSize<Any>(1)))
+            .andExpect(jsonPath("$.flights[0].airline").value("Lufthansa"))
+            .andExpect(jsonPath("$.flights[0].supplier").value("ToughJet"))
+    }
+
+    @Test
     fun `returns empty result when suppliers don't have any matching flight`() {
         stubEmptyResponse("/crazyair/search")
         stubEmptyResponse("/toughjet/search")
@@ -129,7 +157,7 @@ class FlightSearchControllerTest(
             .andExpect(jsonPath("$.flights").isEmpty)
     }
 
-    private fun stubCrazyAir() {
+    private fun stubCrazyAir(delayInMillis: Int = 0) {
         wireMockServer.stubFor(
             get(WireMock.urlPathEqualTo("/crazyair/search"))
                 .withQueryParam("origin", equalTo("LHR"))
@@ -140,6 +168,7 @@ class FlightSearchControllerTest(
                 .willReturn(
                     aResponse()
                         .withStatus(200)
+                        .withFixedDelay(delayInMillis)
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                             """
@@ -169,7 +198,7 @@ class FlightSearchControllerTest(
         )
     }
 
-    private fun stubToughJet() {
+    private fun stubToughJet(delayInMillis: Int = 0) {
         wireMockServer.stubFor(
             get(WireMock.urlPathEqualTo("/toughjet/search"))
                 .withQueryParam("from", equalTo("LHR"))
@@ -180,6 +209,7 @@ class FlightSearchControllerTest(
                 .willReturn(
                     aResponse()
                         .withStatus(200)
+                        .withFixedDelay(delayInMillis)
                         .withHeader("Content-Type", "application/json")
                         .withBody(
                             """

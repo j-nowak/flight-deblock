@@ -18,6 +18,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${coroutinesVersion}")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 	testImplementation("com.github.tomakehurst:wiremock:2.27.2")

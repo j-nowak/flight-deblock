@@ -3,6 +3,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import jakarta.validation.ConstraintViolationException
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -39,6 +40,7 @@ class ErrorHandlingAdvice {
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleException(ex: Exception): ResponseEntity<ErrorResponse> {
+        log.error("Error handling request", ex)
         return ResponseEntity.internalServerError().body(ErrorResponse.internalServerError())
     }
 
@@ -66,6 +68,10 @@ class ErrorHandlingAdvice {
         return ResponseEntity.badRequest().body(
             ErrorResponse.invalidRequestBody("Invalid format for parameter: ${ex.path.first().fieldName}"),
         )
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(ErrorHandlingAdvice::class.java)
     }
 }
 
